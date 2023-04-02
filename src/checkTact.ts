@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { exec } from 'child_process';
 
-const DEPENDENCIES: string[] = ['@tact-lang/compiler', '@tact-lang/emulator', 'ton-core', 'ton-crypto'];
+const DEPENDENCIES: string[] = ['@tact-lang/compiler', '@tact-lang/emulator', 'ton', 'ton-core', 'ton-crypto'];
 
 const checkTactProject = async (file: string) => {
     const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -15,6 +15,7 @@ const checkTactProject = async (file: string) => {
     const rootPath = workspaceFolders[0].uri.fsPath;
     const packageJsonPath = path.join(rootPath, 'package.json');
 
+
     if (!fs.existsSync(packageJsonPath)) {
         // package.json does not exist, suggest to clone the template repository
         const choice = await vscode.window.showInformationMessage(
@@ -23,37 +24,12 @@ const checkTactProject = async (file: string) => {
             'No'
         );
         if (choice === 'Yes') {
-            const projectFolder = path.join(rootPath, 'new-tact-project');
-            const gitCloneCommand = `git clone https://github.com/tact-lang/tact-template ${projectFolder}`;
-
-            // Show progress bar while cloning template repository
-            await vscode.window.withProgress({
-                location: vscode.ProgressLocation.Notification,
-                title: "Cloning template repository...",
-                cancellable: false
-            }, async () => {
-                await new Promise((resolve) => {
-                    exec(gitCloneCommand, () => {
-                        // Called when the clone command is finished
-                        resolve(undefined);
-                    });
-
-                });
-                await new Promise((resolve) => {
-                    // Install dependencies after cloning the repository
-                    exec(`cd ${projectFolder} && npm install`, () => {
-                        resolve(undefined);
-                    });
-                });
-                await new Promise((resolve) => {
-                    exec(`cd ${projectFolder} && git remote rm origin`, () => {
-                        // Called when the clone command is finished
-                        resolve(undefined);
-                    });
-
-                });
-
+            const userInput = await vscode.window.showInputBox({
+                prompt: 'Name your project',
+                placeHolder: 'new-tact-project'
             });
+            setupNewProject(rootPath);
+            const projectFolder = path.join(rootPath, userInput ? userInput : 'new-tact-project');
 
             vscode.window.showInformationMessage('TACT project created successfully.');
             const folderUri = vscode.Uri.file(projectFolder);
@@ -63,15 +39,8 @@ const checkTactProject = async (file: string) => {
             const newFolder = path.join(projectFolder, 'sources');
             const newFilePath = path.join(newFolder, fileName);
 
-            fs.mkdirSync(newFolder, { recursive: true }); // create the new folder if it doesn't exist
-            fs.renameSync(oldFilePath, newFilePath); // move the file to the new folder with the new name
-
-            // const filePath = path.join(folderUri.fsPath, "Sources", fileName);
-
-            // vscode.workspace.openTextDocument(filePath).then((doc) => {
-            //     vscode.window.showTextDocument(doc);
-            // });
-
+            fs.mkdirSync(newFolder, { recursive: true }); 
+            fs.renameSync(oldFilePath, newFilePath); 
 
             vscode.commands.executeCommand('vscode.openFolder', folderUri);
             return true;
@@ -144,4 +113,47 @@ const checkTactProject = async (file: string) => {
     return true;
 };
 
-export { checkTactProject };
+async function setupNewProject(projectFolderPath: string) {
+    const userInput = await vscode.window.showInputBox({
+        prompt: 'Name your project',
+        placeHolder: 'new-tact-project'
+    });
+    const projectFolder = path.join(projectFolderPath, userInput ? userInput : 'new-tact-project');
+    const gitCloneCommand = `git clone https://github.com/tact-lang/tact-template ${projectFolder}`;
+
+    // Show progress bar while cloning template repository
+    await vscode.window.withProgress({
+        location: vscode.ProgressLocation.Notification,
+        title: "Cloning template repository...",
+        cancellable: false
+    }, async () => {
+        await new Promise((resolve) => {
+            exec(gitCloneCommand, () => {
+                // Called when the clone command is finished
+                resolve(undefined);
+            });
+
+        });
+        await new Promise((resolve) => {
+            // Install dependencies after cloning the repository
+            exec(`cd ${projectFolder} && npm install`, () => {
+                resolve(undefined);
+            });
+        });
+        await new Promise((resolve) => {
+            exec(`cd ${projectFolder} && git remote rm origin`, () => {
+                // Called when the clone command is finished
+                resolve(undefined);
+            });
+
+        });
+
+    });
+
+    vscode.window.showInformationMessage('TACT project created successfully.');
+    const folderUri = vscode.Uri.file(projectFolder);
+
+    vscode.commands.executeCommand('vscode.openFolder', folderUri);
+}
+
+export { checkTactProject, setupNewProject };

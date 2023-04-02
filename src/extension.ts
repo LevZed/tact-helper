@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import { checkTactProject } from './checkTact';
+import { checkTactProject, setupNewProject } from './checkTact';
 
 let dontAskFiles: string[] = [];
 let checkedFiles: string[] = [];
@@ -13,10 +13,10 @@ export function activate(context: vscode.ExtensionContext) {
 		if (activeEditor && activeEditor.document.fileName.match(/\.tact$/)) {
 			console.log(dontAskFiles);
 			console.log(checkedFiles);
-			
+
 			if (!dontAskFiles.includes(activeEditor.document.uri.fsPath) && !checkedFiles.includes(activeEditor.document.uri.fsPath)) {
 				const isProject = await checkTactProject(activeEditor.document.uri.fsPath);
-				
+
 				if (!isProject) {
 					dontAskFiles.push(activeEditor.document.uri.fsPath);
 				} else {
@@ -32,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
 				vscode.commands.executeCommand('setContext', 'showTactSetupButton', false);
 				vscode.commands.executeCommand('setContext', 'showTactCompileButton', true);
 			}
-			
+
 		} else {
 			vscode.commands.executeCommand('setContext', 'showTactSetupButton', false);
 			vscode.commands.executeCommand('setContext', 'showTactCompileButton', false);
@@ -59,7 +59,7 @@ export function activate(context: vscode.ExtensionContext) {
 					dontAskFiles.splice(elIndex, 1);
 				}
 				updateToolbarButton();
-				
+
 			}
 		})
 	);
@@ -72,8 +72,16 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('tact-helper.helloWorld', () => {
-			vscode.window.showInformationMessage('Hello World from TACT helper!');
+		vscode.commands.registerCommand('tact-helper.newProjectCmd', async () => {
+			const folder = await vscode.window.showOpenDialog({
+				canSelectFiles: false,
+				canSelectFolders: true,
+				canSelectMany: false,
+				openLabel: 'Select folder'
+			});
+			if (folder && folder[0]){
+				setupNewProject(folder[0].fsPath);
+			}
 		})
 	);
 }
