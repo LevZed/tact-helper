@@ -18,8 +18,9 @@
   "contributes": {
     "commands": [
       {
-        "command": "tact-helper.helloWorld",
-        "title": "Hello World"
+        "command": "tact-helper.newProjectCmd",
+        "category": "TACT helper",
+        "title": "Create a new project"
       },
       {
         "command": "tact-helper.compileTact",
