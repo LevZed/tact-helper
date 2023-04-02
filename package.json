@@ -6,6 +6,10 @@
   "license": "MIT",
   "author": "Revuza",
   "publisher": "RVZD",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/levzed/tact-helper"
+  },
   "engines": {
     "vscode": "^1.77.0"
   },
