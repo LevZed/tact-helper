@@ -1,71 +1,14 @@
-# tact-helper README
+# TACT helper
 
-This is the README for your extension "tact-helper". After writing up a brief description, we recommend including the following sections.
+Hi! I will help you with the development of smart contracts in the TACT language for the TON blockchain.
 
-## Features
+## Current features:
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- In the command palette, use `TACT helper: Create a new project` to select a folder and clone the repository with the project template in it.
 
-For example if there is an image subfolder under your extension project workspace:
+- You can create a file with a `.tact` extension anywhere and write your contract. When you are ready, click on the toolbar button that appears when you edit a `.tact` file to create a new project, and your contract will be transferred there.
 
-\!\[feature X\]\(images/feature-x.png\)
+- You can add the necessary dependencies for TACT development to your current project. Create a file with a `.tact` extension in your project directory, and you will be prompted to add the necessary dependencies to `package.json`.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- If you are in the project directory and `.tact` file editor is active, then you can click on a special button in the toolbar to start compiling it.
+ 

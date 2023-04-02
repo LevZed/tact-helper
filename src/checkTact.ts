@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { exec } from 'child_process';
 
-const DEPENDENCIES: string[] = ['@tact-lang/compiler', '@tact-lang/emulator', 'ton', 'ton-core', 'ton-crypto'];
+const DEPENDENCIES: string[] = ['@tact-lang/compiler', '@tact-lang/deployer', '@tact-lang/emulator', '@types/jest', '@types/node', '@types/qs', 'base64url', 'enquirer', 'jest', 'open', 'prando', 'prettier', 'qs', 'ton', 'ton-core', 'ton-crypto', 'ts-jest', 'ts-node', 'typescript'];
 
 const checkTactProject = async (file: string) => {
     const workspaceFolders = vscode.workspace.workspaceFolders;

@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import { checkTactProject, setupNewProject } from './checkTact';
+import { compileContract } from './compile';
 
 let dontAskFiles: string[] = [];
 let checkedFiles: string[] = [];
@@ -67,7 +68,20 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('tact-helper.compileTact', () => {
 			// Your command logic here
-			vscode.window.showInformationMessage('Compile not implemented!');
+			const tactFile = vscode.window.activeTextEditor?.document.uri.fsPath;
+			const tactProject = vscode.workspace.workspaceFolders;
+			if (tactProject){
+				const tactProjectPath = tactProject[0].uri.fsPath;
+				console.log(tactProjectPath);
+				if (tactFile) {
+					compileContract(tactFile, tactProjectPath);
+				} else {
+					vscode.window.showInformationMessage('not a tact');
+				}
+			} else {
+
+				vscode.window.showInformationMessage('not in project');
+			}
 		})
 	);
 
